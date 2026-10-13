@@ -41,7 +41,9 @@ The tool must never claim more than the README contract. CAN: descriptor mismatc
 - **Profile check:** `usb-verify check` compares descriptors to `profiles/<vendor>/<model>.json`. Any mismatch is red or warning per field rules in the profile. Profile values must cite their source; unverified values are marked `"verified": false` and can only produce warnings.
 - **Traffic watch:** `usb-verify watch --seconds 30` observes enumeration and traffic for a short window during a normal session and flags anomalies (re-enumeration, unexpected interfaces like HID keyboard, unexpected endpoints, unexpected volume). Read-only.
 - **Emulated peripheral:** a pure-software fake USB device (descriptor fixtures, plus later a virtual device such as via speculos or Linux gadget/USB-IP) powers happy-path and tamper-path tests. No real hardware needed in CI.
-- **Signed releases:** release tags signed with Sigstore (preferred) or GPG; SHA-256 checksums published with each release; `docs/agents/INSTALL.md` explains how to verify both.
+- **Signed releases (proposed, awaiting Tyson's OK):** Sigstore keyless signing via GitHub Actions plus a `SHA256SUMS` file on each release; `docs/agents/INSTALL.md` explains how to verify both. Distribution via PyPI trusted publishing plus GitHub releases. Nothing published and no running workflows until approved.
+- **Pluggable profiles per device class:** profiles live under `profiles/<device_class>/` (e.g. `hardware_wallet/ledger`, `hardware_wallet/trezor`, `peripheral/keyboard`, `cable/`). The core check engine is class-agnostic.
+- **Reporting:** GitHub issues for normal reports; `SECURITY.md` points to GitHub private vulnerability reporting for serious findings. No email.
 - **Community testing call:** issue template for contributors with empty or suspected-compromised Ledgers. Never ask for seeds, PINs, or personal data.
 
 ## Milestones and acceptance criteria
@@ -78,7 +80,19 @@ The tool must never claim more than the README contract. CAN: descriptor mismatc
 - Signed tag, checksums, install verification steps. No network at runtime confirmed by test.
 
 ### M7: Community testing
-- Issue template live; first external reports folded into profiles.
+- Issue template live; first external reports folded into profiles. SECURITY.md routes serious findings to private vulnerability reporting.
+
+### Roadmap phases (danger sniffer across device surfaces)
+- **Phase 1: Ledger** (M2 to M7 above).
+- **Phase 2: Trezor and other hardware wallets.** New profiles under `hardware_wallet/`; no core changes.
+- **Phase 3: Everyday USB peripherals** (keyboards, drives, hubs). Flag unexpected extra interfaces, e.g. a drive that also presents HID.
+- **Phase 4: Charging and data cables.** CAN detect cables that enumerate hidden devices (e.g. an unexpected HID keyboard, as with O.MG-style cables). CANNOT detect passive or non-enumerating implants; output must say so on every cable check.
+- Long-term: eventually all device surfaces, each phase with its own disclosure contract.
+
+## Proposed release setup (awaiting Tyson's OK)
+- Sigstore keyless signing via GitHub Actions + SHA256SUMS.
+- PyPI trusted publishing + GitHub releases.
+- Do not publish or add running workflows until approved.
 
 ## Out of scope
 GUI, Mac app (see related idea), cloud services, telemetry, anything that writes to the device.

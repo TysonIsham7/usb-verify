@@ -37,6 +37,21 @@ Like a radar detector, this tool tells you what it listens for and what it canno
 - Social engineering (fake support, phishing, seed-phrase scams).
 - Implants that present a perfect, matching descriptor and behave normally during the watch window.
 
+**Cable caveat (Phase 4):**
+- It CAN detect cables that enumerate hidden devices, for example an unexpected HID keyboard appearing when a cable is plugged in (as with O.MG-style cables).
+- It CANNOT detect passive or non-enumerating implants: a cable or device that never announces itself over USB is invisible to this tool.
+
+## Vision and roadmap
+
+Ledger is the starting point. The longer-term goal is a "danger sniffer" across many device surfaces, eventually all of them. Profiles are pluggable per device class, so each phase adds profiles without changing the core.
+
+1. **Ledger** hardware wallets.
+2. **Trezor and other hardware wallets.**
+3. **Everyday USB peripherals:** keyboards, drives, hubs.
+4. **Charging and data cables** (see the cable caveat above).
+
+Each phase keeps the same disclosure contract: what it can detect, what it can't.
+
 ## Results, honestly
 
 - **Clean pass:** "Passed N of N checks." Never "device is secure." Always suggests a second source of verification.
@@ -60,6 +75,14 @@ See [BUILD_SPEC.md](BUILD_SPEC.md) for the build spec, milestones, and acceptanc
 ## Call for contributors
 
 We need people with **empty** or **suspected-compromised** Ledgers (never one holding funds) to run captures and report results. Open an issue with your device model, firmware version, and descriptor dump once the dump command exists. Never share a seed phrase, PIN, or anything that identifies you.
+
+**Reporting:** normal reports go in GitHub issues. For serious findings (a suspected compromised device, or a flaw in this tool), use GitHub's private vulnerability reporting instead. See [SECURITY.md](SECURITY.md). There is no email contact.
+
+## Releases (proposed, awaiting Tyson's OK)
+
+Nothing is published yet. The proposed setup:
+- Sigstore keyless signing via GitHub Actions, plus a `SHA256SUMS` file on every release.
+- PyPI publishing via trusted publishing (no stored tokens), plus GitHub releases. Once published, install would be `pipx install usb-verify`; until then, install from a clone.
 
 ## Possible building blocks (not dependencies yet)
 
