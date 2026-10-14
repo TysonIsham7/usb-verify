@@ -1,10 +1,12 @@
 # usb-verify
 
+> **⚠️ Untested on a real Ledger.** This CLI has only been run against an emulated device. It has never been tested on real Ledger hardware, and the maintainer does not own a Ledger. This is a goodwill project built to help people, and it may grow into something broader.
+>
+> **Can you help?** If you have a Ledger with **no crypto on it** (empty, never holding funds), running this CLI on it would give the project its first real-world test. See [Call for contributors](#call-for-contributors).
+
 > **User story:** Someone should be able to install this CLI, tell their agent to run it or run it themselves, and get a round of preliminary checks yielding either a true negative or a pass-with-conditions with next steps.
 
 usb-verify is an offline command-line tool that runs a round of preliminary checks on a USB hardware wallet (Ledger first) using hardware you already own. It is built in good faith to give people some peace of mind and to help prevent crypto theft. It is **not** a guarantee.
-
-> **Status: early.** Only a stub and an emulated-device test exist. No real Ledger has been tested yet. See [Call for contributors](#call-for-contributors).
 
 ## Trust and intent
 
